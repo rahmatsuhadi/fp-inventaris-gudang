@@ -100,3 +100,11 @@ Proyek ini dilisensikan di bawah Lisensi MIT.
 
 ---
 Dibuat oleh **[Nama Anda]**
+
+Dibuat oleh Tim **Final Project - PBO**:
+
+-   **[Nama Lengkap Anggota 1]** - [NIM/NPM Anggota 1]
+-   **[Nama Lengkap Anggota 2]** - [NIM/NPM Anggota 2]
+-   **[Nama Lengkap Anggota 3]** - [NIM/NPM Anggota 3]
+-   **[Nama Lengkap Anggota 4]** - [NIM/NPM Anggota 4]
+-   **[Nama Lengkap Anggota 5]** - [NIM/NPM Anggota 5]
