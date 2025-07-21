@@ -6,21 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Inventaris Gudang{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container">
         <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2>📦 InventarisApp</h2>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="{% url 'index' %}">🏠 Dashboard</a></li>
-                <li><a href="{% url 'barang_list' %}">📋 Inventaris</a></li>
-                <li><a href="{% url 'transaksi_list' %}">🔄 Transaksi</a></li>
-                <li><a href="{% url 'pemasok_list' %}">👥 Pemasok</a></li>
-                <li><a href="{% url 'kategori_list' %}">🏷️ Kategori</a></li>
-            </ul>
-        </nav>
+    <div class="sidebar-header">
+        <h2><i class="fas fa-warehouse"></i> Inventaris Gudang</h2>
+    </div>
+    <ul class="nav-menu">
+        <li><a href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="{% url 'barang_list' %}"><i class="fas fa-box-open"></i> Inventaris</a></li>
+        <li><a href="{% url 'transaksi_list' %}"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
+        <li><a href="{% url 'pemasok_list' %}"><i class="fas fa-users"></i> Pemasok</a></li>
+        <li><a href="{% url 'kategori_list' %}"><i class="fas fa-tags"></i> Kategori</a></li>
+    </ul>
+</nav>
 
         <main class="main-content">
             {% block content %}{% endblock %}

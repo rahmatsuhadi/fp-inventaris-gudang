@@ -842,3 +842,16 @@ body {
     background-color: #ffeeed;
     color: var(--red);
 }
+
+.nav-menu li a {
+    display: block;
+    padding: 0.8rem 1rem;
+    /* ... (properti lain) ... */
+}
+
+/* TAMBAHKAN BLOK KODE INI */
+.nav-menu li a i {
+    margin-right: 10px; /* Jarak antara ikon dan teks */
+    width: 20px; /* Pastikan semua ikon punya lebar yang sama untuk alignment */
+    text-align: center;
+}
