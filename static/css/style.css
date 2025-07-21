@@ -98,7 +98,20 @@ body {
 
 /* Buttons */
 .btn-primary {
+    text-decoration: none;
     background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-danger {
+    text-decoration: none;
+    background: red;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -113,6 +126,7 @@ body {
 }
 
 .btn-outline {
+    text-decoration: none;
     background: white;
     color: #374151;
     border: 1px solid #d1d5db;
@@ -129,6 +143,7 @@ body {
 }
 
 .btn-logout {
+    text-decoration: none;
     background: #dc2626;
     color: white;
     border: none;
@@ -139,6 +154,8 @@ body {
 }
 
 .btn-action {
+    
+    text-decoration: none;
     background: none;
     border: none;
     padding: 5px;
@@ -457,33 +474,33 @@ body {
     .container {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         order: 2;
     }
-    
+
     .main-content {
         order: 1;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .content-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .filters {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .search-input {
         min-width: auto;
     }
-    
+
     .header {
         flex-direction: column;
         gap: 15px;
@@ -495,19 +512,19 @@ body {
     .main-content {
         padding: 15px;
     }
-    
+
     .card-content {
         padding: 15px;
     }
-    
+
     .stat-card {
         padding: 15px;
     }
-    
+
     .table-container {
         font-size: 12px;
     }
-    
+
     .data-table th,
     .data-table td {
         padding: 8px;
@@ -623,19 +640,19 @@ body {
     background: #f0f9ff;
 }
 
-.type-option input[type="radio"]:checked + .type-card {
+.type-option input[type="radio"]:checked+.type-card {
     border-color: #2563eb;
     background: #f0f9ff;
 }
 
 .type-card.type-in:hover,
-.type-option input[type="radio"]:checked + .type-card.type-in {
+.type-option input[type="radio"]:checked+.type-card.type-in {
     border-color: #059669;
     background: #f0fdf4;
 }
 
 .type-card.type-out:hover,
-.type-option input[type="radio"]:checked + .type-card.type-out {
+.type-option input[type="radio"]:checked+.type-card.type-out {
     border-color: #dc2626;
     background: #fef2f2;
 }
@@ -709,15 +726,15 @@ body {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .transaction-type-selector {
         grid-template-columns: 1fr;
     }
-    
+
     .form-actions {
         flex-direction: column;
     }
-    
+
     .form-actions button {
         width: 100%;
     }
@@ -729,10 +746,99 @@ body {
         text-align: center;
         gap: 10px;
     }
-    
+
     .type-icon {
         width: 40px;
         height: 40px;
         font-size: 20px;
     }
+}
+
+
+
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+.login-header p {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+
+.btn-logout:hover {
+    opacity: 0.9;
+}
+
+/* CSS BARU UNTUK HALAMAN DETAIL */
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Membuat layout dua kolom */
+    gap: 1.5rem 2rem; /* Jarak antar item */
+    align-items: center;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.detail-value strong {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.detail-separator {
+    grid-column: 1 / -1; /* Membuat garis pemisah membentang penuh */
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 0.5rem 0;
+}
+
+/* Penyesuaian untuk Badge di halaman detail */
+.badge.badge-in, .badge.badge-out {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge.badge-in {
+    background-color: #e5f7ed;
+    color: var(--green);
+}
+
+.badge.badge-out {
+    background-color: #ffeeed;
+    color: var(--red);
 }

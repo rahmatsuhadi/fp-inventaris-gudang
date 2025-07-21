@@ -239,7 +239,7 @@ def transaksi_list(request):
     if search_query:
         transaksi_qs = transaksi_qs.filter(
             Q(barang__nama__icontains=search_query) |
-            Q(barang__pemasok__nama_pemasok__icontains=search_query)
+            Q(barang__pemasok__nama_pemasok__icontains=search_query) 
         )
     if tipe_query:
         transaksi_qs = transaksi_qs.filter(tipe_transaksi=tipe_query)

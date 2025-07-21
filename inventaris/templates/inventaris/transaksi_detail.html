@@ -31,15 +31,11 @@
                 <span class="detail-label">Produk</span>
                 <span class="detail-value">{{ trx.barang.nama }} (SKU: {{ trx.barang.sku }})</span>
             </div>
-             <div class="detail-item">
-                <span class="detail-label">Nomor Referensi</span>
-                <span class="detail-value">{{ trx.nomor_referensi|default:"-" }}</span>
-            </div>
             <div class="detail-item">
                 <span class="detail-label">Partner</span>
                 <span class="detail-value">
                      {% if trx.tipe_transaksi == 'MASUK' %}
-                        {{ trx.pemasok.nama_pemasok|default:"-" }}
+                         {{ trx.barang.pemasok.nama_pemasok|default:"-" }}
                     {% else %}
                         Pelanggan
                     {% endif %}

@@ -1,15 +1,36 @@
 {% extends 'inventaris/base.html' %}
+{% load static %}
 {% block title %}{{ title }}{% endblock %}
+
 {% block content %}
-    <h3>{{ title }}</h3>
-    <hr>
-    <p>Anda yakin ingin menghapus data berikut?</p>
-    <div class="alert alert-warning">
-        <strong>{{ objek }}</strong>
+    <header class="header">
+        <div>
+            <h1>{{ title }}</h1>
+            <p class="header-subtitle">Harap konfirmasi tindakan Anda. Proses ini tidak dapat diurungkan.</p>
+        </div>
+        <div class="header-actions">
+            <a href="javascript:history.back()" class="btn-outline">← Batal</a>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <div class="card">
+            <div class="card-content">
+                <p>Anda yakin ingin menghapus data berikut secara permanen?</p>
+                
+                <div class="alert-item alert-danger">
+                    <div class="alert-info">
+                        <strong>{{ objek }}</strong>
+                    </div>
+                </div>
+
+                <form method="post" style="margin-top: 1.5rem;">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn-danger">⚠️ Ya, Hapus Permanen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Batal</a>
-    </form>
 {% endblock %}
