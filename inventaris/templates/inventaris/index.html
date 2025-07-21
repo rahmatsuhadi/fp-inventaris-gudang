@@ -9,7 +9,10 @@
     <div class="user-info">
         {% if user.is_authenticated %}
         <span>{{ user.username }}</span>
-        <a href="#" class="btn-logout">Keluar</a>
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Keluar</button>
+        </form>
         {% else %}
         <span>Pengguna Tamu</span>
         {% endif %}

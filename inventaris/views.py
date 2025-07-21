@@ -11,8 +11,11 @@ from django.core.paginator import Paginator
 from django.db.models.functions import Coalesce # Untuk menangani nilai NULL
 from django.utils import timezone
 from datetime import timedelta
+# Import dekorator login_required
+from django.contrib.auth.decorators import login_required
 
 # Homepage
+@login_required # <-- TAMBAHKAN INI
 def index(request):
     """
     Menyiapkan data untuk ditampilkan di halaman dashboard utama.
@@ -61,6 +64,7 @@ def index(request):
     return render(request, 'inventaris/index.html', context)
 
 # === Views untuk Kategori ===
+@login_required # <-- TAMBAHKAN INI
 def kategori_list(request):
     # Tambahkan .annotate() untuk menghitung barang di setiap kategori
     kategoris = Kategori.objects.annotate(
@@ -70,6 +74,7 @@ def kategori_list(request):
     return render(request, 'inventaris/kategori_list.html', {'semua_kategori': kategoris})
 
 
+@login_required # <-- TAMBAHKAN INI
 def kategori_tambah(request):
     if request.method == 'POST':
         form = KategoriForm(request.POST)
@@ -80,6 +85,7 @@ def kategori_tambah(request):
         form = KategoriForm()
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': 'Tambah Kategori Baru'})
 
+@login_required # <-- TAMBAHKAN INI
 def kategori_edit(request, pk):
     kategori = get_object_or_404(Kategori, pk=pk)
     if request.method == 'POST':
@@ -91,6 +97,7 @@ def kategori_edit(request, pk):
         form = KategoriForm(instance=kategori)
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': f'Edit Kategori: {kategori.nama}'})
 
+@login_required # <-- TAMBAHKAN INI
 def kategori_hapus(request, pk):
     kategori = get_object_or_404(Kategori, pk=pk)
     if request.method == 'POST':
@@ -100,10 +107,12 @@ def kategori_hapus(request, pk):
 
 
 # === Views untuk Pemasok (Struktur sama dengan Kategori) ===
+@login_required # <-- TAMBAHKAN INI
 def pemasok_list(request):
     pemasoks = Pemasok.objects.all()
     return render(request, 'inventaris/pemasok_list.html', {'semua_pemasok': pemasoks})
 
+@login_required # <-- TAMBAHKAN INI
 def pemasok_tambah(request):
     if request.method == 'POST':
         form = PemasokForm(request.POST)
@@ -114,6 +123,7 @@ def pemasok_tambah(request):
         form = PemasokForm()
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': 'Tambah Pemasok Baru'})
 
+@login_required # <-- TAMBAHKAN INI
 def pemasok_edit(request, pk):
     pemasok = get_object_or_404(Pemasok, pk=pk)
     if request.method == 'POST':
@@ -125,6 +135,7 @@ def pemasok_edit(request, pk):
         form = PemasokForm(instance=pemasok)
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': f'Edit Pemasok: {pemasok.nama_pemasok}'})
 
+@login_required # <-- TAMBAHKAN INI
 def pemasok_hapus(request, pk):
     pemasok = get_object_or_404(Pemasok, pk=pk)
     if request.method == 'POST':
@@ -137,6 +148,7 @@ def pemasok_hapus(request, pk):
 
 
 # === Views untuk Barang (LENGKAP) ===
+@login_required # <-- TAMBAHKAN INI
 def barang_list(request):
     # Ambil data filter dari request GET
     search_query = request.GET.get('q', '')
@@ -180,6 +192,7 @@ def barang_list(request):
     }
     return render(request, 'inventaris/barang_list.html', context)
 
+@login_required # <-- TAMBAHKAN INI
 def barang_tambah(request):
     if request.method == 'POST':
         form = BarangForm(request.POST)
@@ -190,6 +203,7 @@ def barang_tambah(request):
         form = BarangForm()
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': 'Tambah Barang Baru'})
 
+@login_required # <-- TAMBAHKAN INI
 def barang_edit(request, pk):
     barang = get_object_or_404(Barang, pk=pk)
     if request.method == 'POST':
@@ -201,6 +215,7 @@ def barang_edit(request, pk):
         form = BarangForm(instance=barang)
     return render(request, 'inventaris/generic_form.html', {'form': form, 'title': f'Edit Barang: {barang.nama}'})
 
+@login_required # <-- TAMBAHKAN INI
 def barang_hapus(request, pk):
     barang = get_object_or_404(Barang, pk=pk)
     if request.method == 'POST':
@@ -211,7 +226,7 @@ def barang_hapus(request, pk):
 
 # ... (buat juga view untuk edit dan hapus barang seperti contoh kategori) ...
 
-
+@login_required # <-- TAMBAHKAN INI
 def transaksi_list(request):
     search_query = request.GET.get('q', '')
     tipe_query = request.GET.get('tipe', '')
@@ -224,8 +239,7 @@ def transaksi_list(request):
     if search_query:
         transaksi_qs = transaksi_qs.filter(
             Q(barang__nama__icontains=search_query) |
-            Q(nomor_referensi__icontains=search_query) |
-            Q(pemasok__nama_pemasok__icontains=search_query)
+            Q(barang__pemasok__nama_pemasok__icontains=search_query)
         )
     if tipe_query:
         transaksi_qs = transaksi_qs.filter(tipe_transaksi=tipe_query)
@@ -288,12 +302,12 @@ def transaksi_list(request):
         'selected_tanggal_mulai': tanggal_mulai_query,
         'selected_tanggal_selesai': tanggal_selesai_query,
     }
-    print(page_obj)
     return render(request, 'inventaris/transaksi_list.html', context)
 
+@login_required # <-- TAMBAHKAN INI
 def transaksi_detail(request, pk):
     transaksi = get_object_or_404(
-        Transaksi.objects.select_related('barang', 'pemasok'), 
+        Transaksi.objects.select_related('barang', 'barang__pemasok'), 
         pk=pk
     )
     # Anotasi untuk menghitung nilai transaksi ini saja
@@ -303,6 +317,7 @@ def transaksi_detail(request, pk):
 
 
 @transaction.atomic # Menjaga data konsisten
+@login_required # <-- TAMBAHKAN INI
 def transaksi_tambah(request):
     if request.method == 'POST':
         form = TransaksiForm(request.POST)
