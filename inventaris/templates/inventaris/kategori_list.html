@@ -1,0 +1,48 @@
+{% extends 'inventaris/base.html' %}
+{% block title %}Daftar Kategori{% endblock %}
+{% block content %}
+     <header class="header">
+        <h1>Manajemen Kategori</h1>
+        <div class="header-actions">
+            <a href="{% url 'kategori_tambah' %}" class="btn-primary">+ Tambah Kategori</a>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Daftar Kategori</h3>
+            <span class="text-muted">Total: {{ semua_kategori.count }} kategori</span>
+        </div>
+        <div class="card-content">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Kategori</th>
+                            <th>Deskripsi</th>
+                            <th>Jumlah Barang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for kat in semua_kategori %}
+                        <tr>
+                            <td><strong>{{ kat.nama }}</strong></td>
+                            <td>{{ kat.deskripsi|default:"-" }}</td>
+                            <td>{{ kat.jumlah_barang }}</td>
+                            <td>
+                                <a href="{% url 'kategori_edit' kat.pk %}" class="btn-action" title="Edit">✏️</a>
+                                <a href="{% url 'kategori_hapus' kat.pk %}" class="btn-action" title="Hapus">🗑️</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Belum ada kategori.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'inventaris/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h3>{{ title }}</h3>
+    <hr>
+    <p>Anda yakin ingin menghapus data berikut?</p>
+    <div class="alert alert-warning">
+        <strong>{{ objek }}</strong>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Batal</a>
+    </form>
+{% endblock %}

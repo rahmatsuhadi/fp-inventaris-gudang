@@ -1,0 +1,116 @@
+{% extends 'inventaris/base.html' %}
+{% load humanize %} {% block title %}Daftar Barang{% endblock %}
+
+{% block content %}
+<header class="header">
+    <h1>Inventaris Produk</h1>
+    <div class="header-actions">
+        <a href="{% url 'barang_tambah' %}" class="btn-primary">+ Tambah Produk</a>
+    </div>
+</header>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-info">
+            <h3>{{ total_produk }}</h3>
+            <p>Total Jenis Produk</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red">⚠️</div>
+        <div class="stat-info">
+            <h3>{{ stok_rendah_count }}</h3>
+            <p>Stok Rendah</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">💰</div>
+        <div class="stat-info">
+            <h3>Rp {{ total_nilai_inventaris|floatformat:0|intcomma }}</h3>
+            <p>Total Nilai Inventaris (Beli)</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <form method="GET" action="{% url 'barang_list' %}">
+            <div class="filters">
+                <input type="text" name="q" value="{{ search_query }}" placeholder="🔍 Cari nama atau SKU..."
+                    class="search-input">
+                <select name="kategori" class="filter-select">
+                    <option value="">Semua Kategori</option>
+                    {% for kategori in semua_kategori %}
+                    <!-- {% if kategori.pk == selected_kategori %} selected {% endif %} -->
+                    <option value="{{ kategori.pk }}" >
+                        {{ kategori.nama }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-outline">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Daftar Produk</h3>
+        <span class="text-muted">Menampilkan {{ semua_barang.count }} produk</span>
+    </div>
+    <div class="card-content">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>SKU</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
+                        <th>Status</th>
+                        <th>Harga Jual</th>
+                        <th>Supplier</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in semua_barang %}
+                    <tr>
+                        <td><strong>{{ b.nama }}</strong></td>
+                        <td>{{ b.sku|default:"-" }}</td>
+                        <td>
+                            {% if b.kategori %}
+                            <span class="category-tag">{{ b.kategori.nama }}</span>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div><strong>{{ b.jumlah_stok }}</strong></div>
+                            <small>Min: {{ b.stok_minimum }}</small>
+                        </td>
+                        <td>
+                            {% if b.jumlah_stok <= b.stok_minimum %} <span class="badge badge-low">Rendah</span>
+                                {% else %}
+                                <span class="badge badge-safe">Aman</span>
+                                {% endif %}
+                        </td>
+                        <td>Rp {{ b.harga_jual|floatformat:0|intcomma }}</td>
+                        <td>{{ b.pemasok.nama_pemasok|default:"-" }}</td>
+                        <td>
+                            <a href="{% url 'barang_edit' b.pk %}" class="btn-action" title="Edit">✏️</a>
+                            <a href="{% url 'barang_hapus' b.pk %}" class="btn-action" title="Hapus">🗑️</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">Tidak ada barang yang cocok dengan kriteria filter.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

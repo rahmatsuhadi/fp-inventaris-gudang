@@ -1,0 +1,41 @@
+{% extends 'inventaris/base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div>
+        <h1>{{ title }}</h1>
+        <p class="header-subtitle">Lengkapi semua field yang diperlukan di bawah ini</p>
+    </div>
+    <div class="header-actions">
+        <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn-outline">← Kembali</a>
+    </div>
+</header>
+
+<div class="form-container">
+    <div class="card">
+        <div class="card-content">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}  {{ field }}            {% if field.help_text %}
+                        <small class="form-help">{{ field.help_text }}</small>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                        <small class="error-text">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">💾 Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

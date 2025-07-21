@@ -1,0 +1,50 @@
+{% extends 'inventaris/base.html' %}
+{% block title %}Daftar Pemasok{% endblock %}
+{% block content %}
+     <header class="header">
+        <h1>Manajemen Pemasok</h1>
+        <div class="header-actions">
+            <a href="{% url 'pemasok_tambah' %}" class="btn-primary">+ Tambah Pemasok</a>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Daftar Pemasok</h3>
+             <span class="text-muted">Total: {{ semua_pemasok.count }} pemasok</span>
+        </div>
+        <div class="card-content">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Pemasok</th>
+                            <th>Kontak Person</th>
+                            <th>Nomor Telepon</th>
+                            <th>Email</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in semua_pemasok %}
+                        <tr>
+                            <td><strong>{{ p.nama_pemasok }}</strong></td>
+                            <td>{{ p.kontak_person|default:"-" }}</td>
+                            <td>{{ p.nomor_telepon|default:"-" }}</td>
+                            <td>{{ p.email|default:"-" }}</td>
+                            <td>
+                                <a href="{% url 'pemasok_edit' p.pk %}" class="btn-action" title="Edit">✏️</a>
+                                <a href="{% url 'pemasok_hapus' p.pk %}" class="btn-action" title="Hapus">🗑️</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Belum ada pemasok.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

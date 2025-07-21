@@ -1,0 +1,68 @@
+{% extends 'inventaris/base.html' %}
+{% load humanize %}
+
+{% block title %}Detail Transaksi TRX{{ trx.pk|stringformat:"03d" }}{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div>
+        <h1>Detail Transaksi #TRX{{ trx.pk|stringformat:"03d" }}</h1>
+        <p class="header-subtitle">Detail lengkap pergerakan stok pada {{ trx.tanggal_transaksi|date:"d F Y, H:i" }}</p>
+    </div>
+    <div class="header-actions">
+        <a href="{% url 'transaksi_list' %}" class="btn-outline">← Kembali ke Riwayat</a>
+    </div>
+</header>
+
+<div class="card">
+    <div class="card-content">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Jenis Transaksi</span>
+                <span class="detail-value">
+                    {% if trx.tipe_transaksi == 'MASUK' %}
+                        <span class="badge badge-in">STOK MASUK</span>
+                    {% else %}
+                        <span class="badge badge-out">STOK KELUAR</span>
+                    {% endif %}
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Produk</span>
+                <span class="detail-value">{{ trx.barang.nama }} (SKU: {{ trx.barang.sku }})</span>
+            </div>
+             <div class="detail-item">
+                <span class="detail-label">Nomor Referensi</span>
+                <span class="detail-value">{{ trx.nomor_referensi|default:"-" }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Partner</span>
+                <span class="detail-value">
+                     {% if trx.tipe_transaksi == 'MASUK' %}
+                        {{ trx.pemasok.nama_pemasok|default:"-" }}
+                    {% else %}
+                        Pelanggan
+                    {% endif %}
+                </span>
+            </div>
+            <hr class="detail-separator">
+             <div class="detail-item">
+                <span class="detail-label">Jumlah</span>
+                <span class="detail-value">{{ trx.jumlah }} unit</span>
+            </div>
+             <div class="detail-item">
+                <span class="detail-label">Harga Satuan</span>
+                <span class="detail-value">Rp {{ trx.harga_saat_transaksi|floatformat:0|intcomma }}</span>
+            </div>
+             <div class="detail-item">
+                <span class="detail-label">Total Nilai Transaksi</span>
+                <span class="detail-value"><strong>Rp {{ trx.total_nilai|floatformat:0|intcomma }}</strong></span>
+            </div>
+             <div class="detail-item">
+                <span class="detail-label">Catatan</span>
+                <span class="detail-value">{{ trx.catatan|default:"Tidak ada catatan." }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

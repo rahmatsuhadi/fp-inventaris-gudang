@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+
+# Environment / virtualenv
+.env
+.env.*
+venv/
+ENV/
+env/
+.venv/
+*.env
+
+# Django media and static files (if generated dynamically)
+media/
+staticfiles/
+static_root/
+media_root/
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python test cache
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+
+# Migrations (optional – only if you don't want to track them)
+# **Be careful!** Only uncomment this if you're handling migrations differently (e.g. generated at deploy)
+# **/migrations/*.py
+# **/migrations/*.pyc
+
+# Compiled files and reports
+*.egg-info/
+dist/
+build/
+*.egg
+
+# mypy / pylint / coverage
+.mypy_cache/
+.pytype/
+coverage.xml
+*.cover
+*.log
