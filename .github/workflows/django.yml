@@ -38,6 +38,6 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_PROJECT_KEY: "rahmatsuhadi_fp-inventaris-gudang"
-        SONAR_ORGANIZATION: "Mat"
+        SONAR_ORGANIZATION: "rahmatsuhadi"
       
         
