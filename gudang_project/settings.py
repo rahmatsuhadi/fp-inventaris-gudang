@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -86,7 +87,12 @@ DATABASES = {
         )
 }
 
-print(DATABASES)
+# Jika perintah 'test' dijalankan, ganti konfigurasi database ke SQLite.
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'test_db.sqlite3', # Menggunakan file-based SQLite untuk tes
+    }
 
 
 # Password validation
