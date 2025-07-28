@@ -17,6 +17,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+     # ================== LANGKAH DEBUG BARU ==================
+    - name: Debug File Content
+      run: |
+        echo "Mencetak isi file workflow untuk debug:"
+        cat .github/workflows/django.yml
+      # ========================================================
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
