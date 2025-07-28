@@ -39,13 +39,10 @@ jobs:
         python manage.py test
     - name: SonarCloud Scan
       with:
-        projectBaseDir: app/src
         args: >
           -Dsonar.organization=rahmatsuhadi 
           -Dsonar.projectKey=rahmatsuhadi_fp-inventaris-gudang
           -Dsonar.python.coverage.reportPaths=coverage.xml
-          -Dsonar.sources=lib/
-          -Dsonar.tests=tests/
           -Dsonar.test.exclusions=tests/**
           -Dsonar.verbose=true
       uses: sonarsource/sonarqube-scan-action@master
