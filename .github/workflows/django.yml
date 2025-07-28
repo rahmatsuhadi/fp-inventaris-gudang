@@ -31,6 +31,6 @@ jobs:
     - name: SonarCloud Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: "5538c890cfe384bc723397efbe4bc48deb62d30c"
         SONAR_PROJECT_KEY: "rahmatsuhadi_fp-inventaris-gudang" # Ganti dengan project key Anda
         SONAR_ORGANIZATION: "Mat"            # Ganti dengan nama organisasi Anda
