@@ -36,4 +36,4 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_PROJECT_KEY: "rahmatsuhadi_fp-inventaris-gudang" # Ganti dengan project key Anda
-        SONAR_ORGANIZATION: "Mat"            # Ganti dengan nama organisasi Anda
+        SONAR_ORGANIZATION: "rahmatsuhadi"            # Ganti dengan nama organisasi Anda
