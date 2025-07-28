@@ -27,7 +27,9 @@ jobs:
         pip install -r requirements.txt
     - name: Create .env file
       run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env          
+          echo "SONAR_PROJECT_KEY=rahmatsuhadi_fp-inventaris-gudang" >> .env
+          echo "SONAR_ORGANIZATION=Mat" >> .env
     - name: Run Tests
       run: |
         python manage.py test
@@ -35,5 +37,7 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_PROJECT_KEY: "rahmatsuhadi_fp-inventaris-gudang" # Ganti dengan project key Anda
-        SONAR_ORGANIZATION: "rahmatsuhadi"            # Ganti dengan nama organisasi Anda
+        SONAR_PROJECT_KEY: "rahmatsuhadi_fp-inventaris-gudang"
+        SONAR_ORGANIZATION: "Mat"
+      
+        
