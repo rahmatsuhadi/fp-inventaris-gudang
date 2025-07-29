@@ -1,4 +1,4 @@
-# Aplikasi Inventaris Gudang (Django)
+# Aplikasi Inventaris Gudang
 
 Sebuah aplikasi web berbasis Django untuk manajemen inventaris gudang. Aplikasi ini memungkinkan pengguna melacak barang, pemasok, kategori, dan transaksi stok masuk/keluar dalam antarmuka yang bersih dan modern.
 
