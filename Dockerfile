@@ -34,4 +34,5 @@ EXPOSE 8000 9100
 # Jalankan server bawaan Django
 # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-CMD ["python", "manage.py runserver 0.0.0.0:8000 & /usr/local/bin/node_exporter"]
+# CMD ["python", "manage.py runserver 0.0.0.0:8000 & /usr/local/bin/node_exporter"]
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000 & /usr/local/bin/node_exporter"]
