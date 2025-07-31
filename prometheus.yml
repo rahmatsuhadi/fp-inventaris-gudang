@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'django'
+    static_configs:
+      - targets: ['inventory-app-container:8000']  # Target untuk aplikasi Django
+
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['inventory-app-container:9100']  # Target untuk node_exporter

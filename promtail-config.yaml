@@ -1,0 +1,36 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+# positions:
+#   filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: '{{ .__meta_docker_container_label_com_docker_compose_service }}' # Menggunakan nama service dari Docker Compose
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    
+    relabel_configs:
+      # --- FILTER HANYA KONTAINER YANG RELEVAN ---
+      # Asumsi nama service aplikasi Anda adalah 'django-app'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        # regex: 'django-app'
+        action: keep
+
+      # --- TAMBAHKAN LABEL AGAR LOG LEBIH MUDAH DICARI ---
+      # Tambahkan label 'container' dengan nilai nama kontainer
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      
+      # Tambahkan label 'instance' dengan ID kontainer
+      - source_labels: ['__meta_docker_container_id']
+        target_label: 'instance'
+
+      # Tambahkan label 'stream' (stdout atau stderr)
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'stream'

@@ -1,77 +1,77 @@
-// Jenkinsfile
-
 pipeline {
     agent any
 
+    tools {
+        'hudson.plugins.sonar.SonarRunnerInstallation' 'SonarScanner'
+    }
+    
+    environment {
+        SONAR_TOKEN  = credentials('SONAR_TOKEN')
+        SECRET_KEY = credentials('SECRET_KEY')
+        DATABASE_URL = credentials('DATABASE_URL')
+        DEBUG = '1'
+    }
     stages {
-
-        // Tahap 1: Mengambil kode dari GitHub
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/NAMA_USER_ANDA/NAMA_REPO_ANDA.git'
+                git branch: 'main', url: 'https://github.com/rahmatsuhadi/fp-inventaris-gudang.git'
             }
         }
 
-        // Tahap 2: Menginstall dependensi
         stage('Install Dependencies') {
             steps {
-                script {
-                    echo 'Menginstall dependensi Python...'
-                    sh 'python -m pip install -r requirements.txt'
-                }
+                echo 'Menginstall dependensi Python...'
+                bat '''
+                python -m pip install --upgrade pip
+                python -m pip install --only-binary=:all: -r requirements.txt
+                '''
             }
         }
 
-        // Tahap 3: Menjalankan tes
         stage('Run Tests') {
             steps {
-                script {
-                    echo 'Menjalankan unit tests...'
-                    sh 'python manage.py test'
-                }
+                echo 'Menjalankan unit tests...'
+                bat '''
+                python manage.py test
+                if exist db.sqlite3 (
+                    del db.sqlite3
+                )
+                '''
             }
         }
-
-        // Tahap 4: Analisis Kode dengan SonarQube
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('MySonarQube') {
-        //             sh 'sonar-scanner'
-        //         }
-        //     }
-        // }
-
-        // Tahap 5: Membangun Docker Image
-        stage('Build Docker Image') {
+        
+        stage('SonarQube analysis') {
             steps {
                 script {
-                    echo 'Membangun Docker image...'
-                    sh 'docker build -t inventory-app:latest .'
-                }
-            }
-        }
-
-        // Tahap 6: Menjalankan Container (Deployment)
-        stage('Deploy to Docker') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'DATABASE_URL', variable: 'DB_URL'),
-                                     string(credentialsId: 'SECRET_KEY', variable: 'SEC_KEY')]) {
-                        
-                        echo 'Membuat file environment sementara...'
-                        sh '''
-                            echo DATABASE_URL=${DB_URL} > temp.env
-                            echo SECRET_KEY=${SEC_KEY} >> temp.env
-                            echo DEBUG=0 >> temp.env
-                        '''
-
-                        echo 'Menghentikan dan menghapus container lama (jika ada)...'
-                        sh 'docker stop inventory-app-container || true && docker rm inventory-app-container || true'
-
-                        echo 'Menjalankan container baru...'
-                        sh 'docker run -d --name inventory-app-container -p 8000:8000 --env-file temp.env inventory-app:latest'
+                    def scannerHome = tool 'SonarScanner'  // nama tool di Jenkins
+                    withSonarQubeEnv('SonarQube') {       // nama server di Jenkins
+                        bat "\"${scannerHome}\\bin\\sonar-scanner.bat\""
                     }
                 }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Build image aplikasi Django...'
+                bat 'docker build -t inventory-app:latest .'
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                echo 'Deploy ke Docker container...'
+                bat '''
+                docker stop inventory-app-container || echo "Container tidak ditemukan, lanjut..."
+                docker rm inventory-app-container || echo "Container tidak ada untuk dihapus."
+                docker run -d --name inventory-app-container ^
+                    -e SECRET_KEY=%SECRET_KEY% ^
+                    -e DATABASE_URL=%DATABASE_URL% ^
+                    -e DEBUG=%DEBUG% ^
+                    -p 8000:8000 ^
+                    -p 9100:9100 ^
+                    inventory-app:latest
+                '''
             }
         }
     }

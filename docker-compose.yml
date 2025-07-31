@@ -1,0 +1,71 @@
+version: '3'
+services:
+  inventory-app:
+    build: .
+    container_name: inventory-app-container
+    ports:
+      - "8000:8000"
+      - "9100:9100"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEBUG=${DEBUG}
+    networks:
+      - monitoring_network
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring_network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - monitoring_network
+    depends_on:
+      - prometheus
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"  # Lokasi untuk menerima log
+    command: -config.file=/etc/loki/loki-config.yaml -config.expand-env
+    environment:       
+      - HOST=host.docker.internal
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+    networks:
+      - monitoring_network
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log  # Direktori log Docker
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro     
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # <-- penting untuk docker_sd_configs
+
+
+    command: "-config.file=/etc/promtail/promtail-config.yaml" # <- Perhatikan ini! 
+    networks:
+      - monitoring_network
+    depends_on:
+      - loki
+
+networks:
+  monitoring_network:
+    driver: bridge
